@@ -3,70 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الموثّق الذكي - Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>DocuMonster | محرر العقود الاحترافي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="theme-modern">
 
-    <div class="editor-panel no-print">
-        <div class="header">
-            <h2><i class="fas fa-file-signature"></i> الموثّق الذكي</h2>
-            <p>املأ البيانات وشاهد الوثيقة تُبنى فوراً</p>
+    <div class="sidebar no-print">
+        <div class="brand">
+            <i class="fas fa-dragon"></i> Docu<span>Monster</span>
+        </div>
+        
+        <div class="scroll-area">
+            
+            <details open>
+                <summary><i class="fas fa-cog"></i> إعدادات الوثيقة</summary>
+                
+                <div class="input-group">
+                    <label>نوع النموذج</label>
+                    <select id="docType" onchange="updateContent()">
+                        </select>
+                </div>
+
+                <div class="input-group">
+                    <label>الثيم (التصميم)</label>
+                    <select id="themeSelector" onchange="changeTheme()">
+                        <option value="theme-modern">مودرن (أزرق حديث)</option>
+                        <option value="theme-classic">كلاسيكي (رسمي ذهبي)</option>
+                        <option value="theme-minimal">بسيط (أبيض وأسود)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label class="upload-label" for="logoUploader">
+                        <i class="fas fa-cloud-upload-alt"></i> رفع شعار الشركة
+                    </label>
+                    <input type="file" id="logoUploader" accept="image/*" onchange="uploadLogo()" hidden>
+                </div>
+            </details>
+
+            <details>
+                <summary><i class="fas fa-users"></i> بيانات الأطراف</summary>
+                <input type="text" id="partyOne" placeholder="الطرف الأول (الاسم)" oninput="updateContent()">
+                <input type="text" id="idOne" placeholder="رقم الهوية / السجل" oninput="updateContent()">
+                <hr style="border-color: rgba(255,255,255,0.1); margin: 10px 0;">
+                <input type="text" id="partyTwo" placeholder="الطرف الثاني (الاسم)" oninput="updateContent()">
+                <input type="text" id="idTwo" placeholder="رقم الهوية" oninput="updateContent()">
+            </details>
+            
+            <details open>
+                <summary><i class="fas fa-file-alt"></i> التفاصيل والشروط</summary>
+                 <div class="input-group">
+                    <label>تاريخ التحرير</label>
+                    <input type="date" id="date" oninput="updateContent()">
+                </div>
+                <textarea id="details" rows="6" placeholder="اكتب التفاصيل هنا (المبلغ، الشروط، البنود...)" oninput="updateContent()"></textarea>
+            </details>
+
+            <details>
+                <summary><i class="fas fa-signature"></i> التوقيع الإلكتروني</summary>
+                
+                <label class="sig-label">توقيع الطرف الأول:</label>
+                <div class="canvas-container">
+                    <canvas id="sigPad1" width="300" height="120"></canvas>
+                    <button class="clear-sig" onclick="clearSignature(1)"><i class="fas fa-eraser"></i></button>
+                </div>
+
+                 <label class="sig-label">توقيع الطرف الثاني:</label>
+                <div class="canvas-container">
+                    <canvas id="sigPad2" width="300" height="120"></canvas>
+                    <button class="clear-sig" onclick="clearSignature(2)"><i class="fas fa-eraser"></i></button>
+                </div>
+            </details>
+
         </div>
 
-        <div class="form-group">
-            <label>نوع الوثيقة</label>
-            <select id="docType" onchange="updateTemplate()">
-                <option value="contract">عقد اتفاق عمل</option>
-                <option value="commitment">إقرار والتزام دين</option>
-                <option value="rental">عقد إيجار بسيط</option>
-            </select>
+        <div class="actions">
+             <button class="btn-primary download-btn" onclick="downloadPDF()">
+                <i class="fas fa-file-download fa-lg"></i> تحميل PDF
+            </button>
+             <div class="secondary-actions">
+                <button class="btn-secondary" onclick="saveToLocal()">
+                    <i class="fas fa-save"></i> حفظ مسودة
+                </button>
+                 <button class="btn-secondary" onclick="window.print()">
+                    <i class="fas fa-print"></i> طباعة
+                </button>
+             </div>
         </div>
-
-        <div class="form-group">
-            <label>الطرف الأول (صاحب الحق/العمل)</label>
-            <input type="text" id="partyOne" placeholder="الاسم الكامل" oninput="updateContent()">
-            <input type="text" id="idOne" placeholder="رقم الهوية/سجل مدني" oninput="updateContent()">
-        </div>
-
-        <div class="form-group">
-            <label>الطرف الثاني (الملتزم/المستفيد)</label>
-            <input type="text" id="partyTwo" placeholder="الاسم الكامل" oninput="updateContent()">
-            <input type="text" id="idTwo" placeholder="رقم الهوية" oninput="updateContent()">
-        </div>
-
-        <div class="form-group">
-            <label>تفاصيل إضافية (المبلغ / الخدمة)</label>
-            <textarea id="details" rows="3" placeholder="مثلاً: مبلغ وقدره 5000 ريال... أو برمجة تطبيق..." oninput="updateContent()"></textarea>
-        </div>
-
-        <div class="form-group">
-            <label>تاريخ التحرير</label>
-            <input type="date" id="date" oninput="updateContent()">
-        </div>
-
-        <button class="print-btn" onclick="window.print()">
-            <i class="fas fa-print"></i> طباعة / حفظ PDF
-        </button>
     </div>
 
-    <div class="preview-panel">
-        <div id="paper" class="a4-paper">
-            <div id="documentContent"></div>
+    <div class="preview-area">
+        <div id="paperToDownload" class="a4-sheet">
             
-            <div class="signatures">
-                <div class="sig-block">
-                    <p>الطرف الأول</p>
-                    <p id="sigOneName">..................</p>
-                    <div class="sign-space">التوقيع</div>
+            <div class="doc-header">
+                <div id="logoPlace" class="logo-placeholder" style="display: none;">
+                    <img id="logoImg" src="" alt="Logo">
                 </div>
-                <div class="sig-block">
-                    <p>الطرف الثاني</p>
-                    <p id="sigTwoName">..................</p>
-                    <div class="sign-space">التوقيع</div>
+                <div class="header-text doc-title" id="docTitleDisplay">عنوان الوثيقة</div>
+            </div>
+
+            <div class="doc-divider"></div>
+
+            <div id="documentContent" class="doc-content-area"></div>
+
+            <div class="footer-signatures">
+                <div class="sig-box">
+                    <strong>الطرف الأول</strong>
+                    <p id="p1NameSig" class="signer-name">..................</p>
+                    <div class="seal-area">
+                         <img id="digitalSig1" class="digital-signature-img" style="display:none;">
+                         <span class="placeholder-text">التوقيع</span>
+                    </div>
                 </div>
+                <div class="sig-box">
+                    <strong>الطرف الثاني</strong>
+                    <p id="p2NameSig" class="signer-name">..................</p>
+                    <div class="seal-area">
+                         <img id="digitalSig2" class="digital-signature-img" style="display:none;">
+                         <span class="placeholder-text">التوقيع</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="doc-footer">
+                تم إنشاء هذه الوثيقة إلكترونياً عبر منصة DocuMonster | <span id="footerDate"></span>
             </div>
         </div>
     </div>
