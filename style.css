@@ -1,128 +1,142 @@
-:root {
-    --primary: #2563eb;
-    --bg: #f3f4f6;
-    --text: #1f2937;
-    --paper: #ffffff;
+/* === إعدادات الثيمات (Themes Variables) === */
+.theme-modern {
+    --sidebar-bg: #1e1e2d; --sidebar-text: #a2a3b7; --accent: #3699ff;
+    --doc-font: 'Tajawal', sans-serif; --doc-title-color: #1e1e2d;
+    --doc-divider: 3px solid var(--accent); --sig-color: #000080;
+}
+.theme-classic {
+    --sidebar-bg: #2b2b2b; --sidebar-text: #e0e0e0; --accent: #d4af37;
+    --doc-font: 'Amiri', serif; --doc-title-color: #000;
+    --doc-divider: 2px double #d4af37; --sig-color: #000;
+}
+.theme-minimal {
+    --sidebar-bg: #f8f9fa; --sidebar-text: #333; --accent: #333;
+    --doc-font: 'Tajawal', sans-serif; --doc-title-color: #000;
+    --doc-divider: 1px solid #ccc; --sig-color: #333;
 }
 
 body {
-    font-family: 'Tajawal', sans-serif;
-    background-color: var(--bg);
-    margin: 0;
-    display: flex;
-    height: 100vh;
-    overflow: hidden; /* لمنع التمرير العام */
+    margin: 0; font-family: 'Tajawal', sans-serif;
+    display: flex; height: 100vh; background: #eef0f8; overflow: hidden;
 }
 
-/* --- لوحة التحكم (اليمين) --- */
-.editor-panel {
-    width: 350px;
-    background: white;
-    padding: 20px;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-    overflow-y: auto;
-    z-index: 10;
+/* --- القائمة الجانبية --- */
+.sidebar {
+    width: 350px; background: var(--sidebar-bg); color: var(--sidebar-text);
+    display: flex; flex-direction: column; box-shadow: 2px 0 10px rgba(0,0,0,0.1); z-index: 100;
+}
+.brand {
+    padding: 20px; font-size: 1.5rem; font-weight: 900; color: #fff; text-align: center;
+    background: rgba(0,0,0,0.1); letter-spacing: 1px;
+}
+.theme-minimal .brand { color: #333; }
+.brand span { color: var(--accent); }
+
+.scroll-area { flex: 1; padding: 15px; overflow-y: auto; }
+
+/* القوائم القابلة للطي */
+details {
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+    margin-bottom: 10px; border-radius: 8px; overflow: hidden;
+}
+.theme-minimal details { background: #fff; border: 1px solid #ddd; }
+
+summary {
+    padding: 12px; cursor: pointer; font-weight: bold; color: var(--accent);
+    outline: none; list-style: none;
+}
+summary::-webkit-details-marker { display: none; }
+summary:hover { background: rgba(255,255,255,0.05); }
+
+/* حقول الإدخال */
+input, select, textarea {
+    width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.1); color: inherit;
+    padding: 10px; margin-bottom: 10px; border-radius: 5px; font-family: inherit;
+}
+.theme-minimal input, .theme-minimal select, .theme-minimal textarea {
+    background: #fff; border: 1px solid #ccc;
+}
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
+
+.input-group { margin-bottom: 10px; padding: 0 10px; }
+.input-group label { display: block; font-size: 0.85rem; margin-bottom: 5px; opacity: 0.8; }
+
+/* أزرار الرفع والرسم */
+.upload-label {
+    border: 2px dashed #555; padding: 10px; text-align: center; border-radius: 5px; cursor: pointer;
+}
+.upload-label:hover { border-color: var(--accent); color: var(--accent); }
+
+.canvas-container {
+    background: #fff; border-radius: 5px; margin: 0 10px 10px;
+    position: relative; border: 2px solid #ccc;
+}
+canvas { display: block; width: 100%; cursor: crosshair; }
+.clear-sig {
+    position: absolute; top: 5px; left: 5px; background: #ff4757; color: white;
+    border: none; border-radius: 3px; cursor: pointer; padding: 2px 8px;
 }
 
-.header h2 { color: var(--primary); margin-top: 0; }
-.header p { font-size: 0.9rem; color: #666; }
-
-.form-group { margin-bottom: 20px; }
-.form-group label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 0.9rem; }
-.form-group input, .form-group select, .form-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-family: inherit;
-    box-sizing: border-box;
-    transition: 0.3s;
+/* الأزرار الرئيسية */
+.actions { padding: 15px; background: rgba(0,0,0,0.2); }
+.download-btn {
+    width: 100%; padding: 12px; background: var(--accent); color: #fff;
+    border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 1rem;
 }
-.form-group input:focus { border-color: var(--primary); outline: none; }
-
-.print-btn {
-    width: 100%;
-    padding: 12px;
-    background: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
-    font-family: inherit;
-    transition: 0.2s;
+.secondary-actions { display: flex; gap: 10px; margin-top: 10px; }
+.btn-secondary {
+    flex: 1; padding: 8px; background: transparent; border: 1px solid #777;
+    color: inherit; border-radius: 6px; cursor: pointer;
 }
-.print-btn:hover { background: #1d4ed8; }
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
 
-/* --- لوحة المعاينة (اليسار) --- */
-.preview-panel {
-    flex: 1;
-    background: #e5e7eb;
-    display: flex;
-    justify-content: center;
-    padding: 40px;
-    overflow-y: auto;
+/* --- منطقة المعاينة (الورقة) --- */
+.preview-area {
+    flex: 1; overflow-y: auto; padding: 40px; display: flex; justify-content: center;
+}
+.a4-sheet {
+    width: 210mm; min-height: 297mm; background: white; padding: 25mm;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1); position: relative;
+    font-family: var(--doc-font); color: #000;
 }
 
-/* --- ورقة A4 --- */
-.a4-paper {
-    background: white;
-    width: 210mm;
-    min-height: 297mm;
-    padding: 25mm;
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
-    position: relative;
-    box-sizing: border-box;
+.doc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.logo-placeholder img { max-height: 80px; }
+.doc-title {
+    font-size: 24pt; font-weight: bold; color: var(--doc-title-color);
+    text-align: center; flex: 1;
+}
+.doc-divider { border-bottom: var(--doc-divider); margin-bottom: 30px; }
+
+.doc-content-area {
+    font-size: 13pt; line-height: 1.8; text-align: justify; min-height: 400px;
+}
+.highlight { font-weight: bold; }
+
+.footer-signatures {
+    margin-top: 60px; display: flex; justify-content: space-between; page-break-inside: avoid;
+}
+.sig-box { width: 45%; text-align: center; }
+.signer-name { font-weight: bold; margin-bottom: 10px; border-bottom: 1px dotted #999; }
+.seal-area {
+    height: 100px; border: 2px dashed #ddd; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; position: relative;
+}
+.placeholder-text { color: #eee; font-weight: bold; user-select: none; }
+.digital-signature-img {
+    position: absolute; max-width: 90%; max-height: 90%;
+    mix-blend-mode: multiply;
 }
 
-#documentContent {
-    font-size: 14pt;
-    line-height: 1.8;
-    text-align: justify;
-    white-space: pre-wrap;
+.doc-footer {
+    position: absolute; bottom: 10mm; left: 0; right: 0;
+    text-align: center; font-size: 9pt; color: #aaa; border-top: 1px solid #eee; padding-top: 10px; width: 80%; margin: 0 auto;
 }
 
-.title-doc {
-    text-align: center;
-    font-size: 24pt;
-    font-weight: bold;
-    margin-bottom: 40px;
-    text-decoration: underline;
-}
-
-.signatures {
-    margin-top: 60px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.sig-block {
-    text-align: center;
-    width: 40%;
-}
-
-.sign-space {
-    margin-top: 40px;
-    border-top: 1px dashed #333;
-    padding-top: 10px;
-    color: #888;
-}
-
-/* --- إعدادات الطباعة (مهم جداً للـ PDF) --- */
+/* إصلاحات الطباعة */
 @media print {
-    body { display: block; background: white; height: auto; overflow: visible; }
-    .editor-panel { display: none; } /* إخفاء لوحة التحكم عند الطباعة */
-    .preview-panel { display: block; padding: 0; overflow: visible; }
-    .a4-paper { 
-        box-shadow: none; 
-        margin: 0; 
-        width: 100%; 
-        min-height: auto;
-    }
-}
-/* تحسين للموبايل */
-@media (max-width: 768px) {
-    body { flex-direction: column; overflow: auto; }
-    .editor-panel { width: 100%; height: auto; box-sizing: border-box;}
-    .a4-paper { width: 100%; padding: 15mm; }
+    .sidebar { display: none; }
+    .preview-area { padding: 0; background: white; }
+    .a4-sheet { box-shadow: none; margin: 0; }
 }
