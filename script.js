@@ -1,26 +1,33 @@
-// ==========================================
-// 1. قاعدة بيانات النماذج (Control Panel)
-// ==========================================
+/**
+ * ====================================================================
+ * 🔴 منطقة لوحة التحكم (ADMIN DASHBOARD)
+ * هنا يمكنك إضافة نماذج جديدة أو تعديل النصوص
+ * ====================================================================
+ */
+
 const templatesDB = [
+    // --- النموذج الأول: عقد عمل ---
     {
         id: 'contract',
-        name: 'عقد عمل وتوظيف 👔',
+        name: '👔 عقد عمل وتوظيف',
         docTitle: 'عقــــد عمــــل',
         content: `
-            <p>إنه في يوم <span class="highlight">\${date}</span>، تم الاتفاق والتعاقد بين:</p>
-            <p><strong>1. الطرف الأول:</strong> السيد/ة <span class="highlight">\${p1}</span> (صاحب العمل)، هوية: \${id1}</p>
-            <p><strong>2. الطرف الثاني:</strong> السيد/ة <span class="highlight">\${p2}</span> (الموظف)، هوية: \${id2}</p>
+            <p>إنه في يوم <span class="highlight">\${date}</span>، تم الاتفاق بين:</p>
+            <p><strong>1. الطرف الأول:</strong> السيد/ة <span class="highlight">\${p1}</span> (صاحب العمل)، هوية رقم: \${id1}</p>
+            <p><strong>2. الطرف الثاني:</strong> السيد/ة <span class="highlight">\${p2}</span> (الموظف)، هوية رقم: \${id2}</p>
             <br>
             <h3>التمهيد:</h3>
-            <p>نظراً لحاجة الطرف الأول لخدمات الطرف الثاني، فقد اتفق الطرفان على الآتي:</p>
+            <p>حيث يرغب الطرف الأول في توظيف الطرف الثاني لديه، فقد اتفق الطرفان على الآتي:</p>
             <h3>بنود العقد:</h3>
             <div style="background:#f9f9f9; padding:15px; border-right:4px solid #333;">\${details}</div>
-            <p>يلتزم الطرف الثاني بأداء العمل الموكل إليه بأمانة وإخلاص، ويلتزم الطرف الأول بدفع الأتعاب المتفق عليها.</p>
+            <p>يلتزم الطرف الثاني بأداء العمل الموكل إليه بأمانة وإخلاص، ويلتزم الطرف الأول بدفع الرواتب والمستحقات.</p>
         `
     },
+
+    // --- النموذج الثاني: عمل حر (Freelance) ---
     {
         id: 'freelance',
-        name: 'اتفاقية عمل حر (Freelance) 💻',
+        name: '💻 اتفاقية عمل حر (Freelance)',
         docTitle: 'اتفاقيــة خدمــات مســتقلة',
         content: `
             <p>التاريخ: <span class="highlight">\${date}</span></p>
@@ -31,45 +38,55 @@ const templatesDB = [
             <h3>نطاق العمل (Scope of Work):</h3>
             <p>يقوم المستقل بتنفيذ المهام التالية:</p>
             <div style="border:1px dashed #555; padding:15px;">\${details}</div>
-            <p>تنتقل حقوق الملكية الفكرية للعميل فور سداد كامل المبلغ المستحق.</p>
+            <p>لا يعتبر هذا العقد توظيفاً دائماً، وتنتقل حقوق الملكية للعميل فور سداد كامل المبلغ.</p>
         `
     },
+
+    // --- النموذج الثالث: إقرار دين ---
     {
         id: 'debt',
-        name: 'إقرار دين مالي 💰',
+        name: '💰 إقرار دين مالي',
         docTitle: 'سند لأمر / إقرار دين',
         content: `
             <p>أقر أنا الموقع أدناه <strong>\${p2}</strong> (المدين) حامل هوية رقم (\${id2})،</p>
             <p>بأنني مدين للسيد/ة <strong>\${p1}</strong> (الدائن) حامل هوية رقم (\${id1})،</p>
             <br>
-            <p>بمبلغ وقدره (أو تفاصيل الدين):</p>
+            <p>بمبلغ وقدره (أو تفاصيل الالتزام):</p>
             <h2 style="text-align:center; border:2px solid #000; padding:10px; margin:20px 0;">\${details}</h2>
-            <p>وأتعهد بسداد هذا المبلغ بالكامل في موعد أقصاه <strong>\${date}</strong> دون أي تأخير.</p>
+            <p>وأتعهد بسداد هذا المبلغ بالكامل في موعد أقصاه <strong>\${date}</strong>.</p>
             <p>وهذا إقرار مني بذلك، والله خير الشاهدين.</p>
         `
     },
+
+    // --- النموذج الرابع: عقد إيجار (مثال للإضافة) ---
     {
-        id: 'custom',
-        name: 'نموذج فارغ (مخصص) 📝',
-        docTitle: 'وثيقـــــة',
+        id: 'rent',
+        name: '🏠 عقد إيجار عقار',
+        docTitle: 'عقــــد إيجــــار',
         content: `
-            <p>حرر بتاريخ: <strong>\${date}</strong></p>
-            <p>بين السيد: <strong>\${p1}</strong> والسيد: <strong>\${p2}</strong></p>
+            <p>المؤجر: <strong>\${p1}</strong> (هوية: \${id1})</p>
+            <p>المستأجر: <strong>\${p2}</strong> (هوية: \${id2})</p>
             <br>
-            <h3>الموضوع:</h3>
-            <div style="min-height:200px;">\${details}</div>
+            <h3>العين المؤجرة:</h3>
+            <p>قام المؤجر بتأجير العقار الموضح أدناه للمستأجر:</p>
+            <div style="border:1px solid #ccc; padding:10px;">\${details}</div>
+            <p>مدة الإيجار تبدأ من تاريخ <strong>\${date}</strong>.</p>
         `
     }
 ];
 
-// ==========================================
-// 2. الكود البرمجي (المحرك)
-// ==========================================
+/**
+ * ====================================================================
+ * ⚙️ منطقة المحرك (ENGINE)
+ * لا تقم بتعديل الأكواد أدناه إلا إذا كنت تعرف ما تفعل
+ * ====================================================================
+ */
 
-let pads = [null, null];
+let pads = [null, null]; // لتخزين بيانات لوحات التوقيع
 
+// عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', () => {
-    // بناء القائمة المنسدلة من قاعدة البيانات
+    // 1. تعبئة القائمة المنسدلة من "لوحة التحكم" أعلاه
     const selectBox = document.getElementById('docType');
     selectBox.innerHTML = '';
     templatesDB.forEach(t => {
@@ -79,42 +96,49 @@ document.addEventListener('DOMContentLoaded', () => {
         selectBox.appendChild(opt);
     });
 
-    // الإعدادات الأولية
-    document.getElementById('date').value = new Date().toISOString().split('T')[0];
+    // 2. إعداد التواريخ
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('date').value = today;
     document.getElementById('footerDate').innerText = new Date().toLocaleDateString('ar-EG');
     
-    // تهيئة لوحات الرسم
+    // 3. تشغيل لوحات التوقيع
     setupSignaturePad(1);
     setupSignaturePad(2);
     
-    // استرجاع البيانات المحفوظة
+    // 4. استرجاع المسودة القديمة إن وجدت
     loadFromLocal();
     
-    // التحديث الأول
+    // 5. التحديث الأول للصفحة
     updateContent();
 });
 
-// --- وظيفة تحديث المحتوى ---
+// --- الدالة الرئيسية: تحديث محتوى الورقة ---
 function updateContent() {
+    // جلب البيانات من الحقول
     const selectedId = document.getElementById('docType').value;
     const p1 = document.getElementById('partyOne').value || "..................";
     const id1 = document.getElementById('idOne').value || "..................";
     const p2 = document.getElementById('partyTwo').value || "..................";
     const id2 = document.getElementById('idTwo').value || "..................";
     const date = document.getElementById('date').value;
+    
+    // تحويل الأسطر الجديدة في التفاصيل إلى <br>
     let detailsRaw = document.getElementById('details').value;
     let details = detailsRaw ? detailsRaw.replace(/\n/g, '<br>') : "..................";
 
-    // تحديث الأسماء في التوقيع
+    // تحديث أسماء الموقعين في الأسفل
     document.getElementById('p1NameSig').innerText = p1 !== ".................." ? p1 : "الطرف الأول";
     document.getElementById('p2NameSig').innerText = p2 !== ".................." ? p2 : "الطرف الثاني";
 
-    // البحث عن القالب وتنفيذه
+    // البحث عن القالب المناسب في المصفوفة
     const template = templatesDB.find(t => t.id === selectedId);
+
     if (template) {
+        // وضع العنوان
         document.getElementById('docTitleDisplay').innerText = template.docTitle;
         
-        let html = template.content
+        // استبدال المتغيرات (${p1}, ${date}...) بالبيانات الحقيقية
+        let finalHtml = template.content
             .replace(/\${date}/g, date)
             .replace(/\${p1}/g, p1)
             .replace(/\${id1}/g, id1)
@@ -122,35 +146,36 @@ function updateContent() {
             .replace(/\${id2}/g, id2)
             .replace(/\${details}/g, details);
 
-        document.getElementById('documentContent').innerHTML = html;
+        document.getElementById('documentContent').innerHTML = finalHtml;
     }
 }
 
-// --- وظيفة التوقيع الإلكتروني (Canvas) ---
+// --- إعداد لوحة التوقيع (Canvas) ---
 function setupSignaturePad(id) {
     const canvas = document.getElementById(`sigPad${id}`);
     const ctx = canvas.getContext('2d');
     let isDrawing = false;
     
-    // تخزين المرجع
     pads[id-1] = { canvas, ctx, hasSignature: false };
     
-    // إعدادات القلم
-    ctx.strokeStyle = "#1a237e"; 
+    // خصائص القلم
+    ctx.strokeStyle = "#1a237e"; // لون أزرق حبري
     ctx.lineWidth = 2.5;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
+    // دوال الرسم
     function start(e) { isDrawing = true; ctx.beginPath(); const {x,y} = getCoords(e, canvas); ctx.moveTo(x,y); e.preventDefault(); }
     function move(e) { if(!isDrawing) return; const {x,y} = getCoords(e, canvas); ctx.lineTo(x,y); ctx.stroke(); pads[id-1].hasSignature=true; updateSigPreview(id); e.preventDefault(); }
     function end() { isDrawing = false; ctx.closePath(); }
 
-    // Mouse Events
+    // دعم الماوس
     canvas.addEventListener('mousedown', start); canvas.addEventListener('mousemove', move); canvas.addEventListener('mouseup', end); canvas.addEventListener('mouseout', end);
-    // Touch Events
+    // دعم اللمس (للموبايل)
     canvas.addEventListener('touchstart', start, {passive:false}); canvas.addEventListener('touchmove', move, {passive:false}); canvas.addEventListener('touchend', end);
 }
 
+// دالة مساعدة لتحديد مكان الإصبع/الماوس
 function getCoords(e, canvas) {
     const rect = canvas.getBoundingClientRect();
     let x, y;
@@ -159,14 +184,16 @@ function getCoords(e, canvas) {
     return {x, y};
 }
 
+// تحديث صورة التوقيع في الورقة
 function updateSigPreview(id) {
     if(!pads[id-1].hasSignature) return;
     const img = document.getElementById(`digitalSig${id}`);
     img.src = pads[id-1].canvas.toDataURL();
     img.style.display = 'block';
-    img.nextElementSibling.style.display = 'none';
+    img.nextElementSibling.style.display = 'none'; // إخفاء كلمة "التوقيع"
 }
 
+// مسح التوقيع
 function clearSignature(id) {
     const {canvas, ctx} = pads[id-1];
     ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -176,9 +203,12 @@ function clearSignature(id) {
     img.nextElementSibling.style.display='block';
 }
 
-// --- وظائف المساعدة والتحميل ---
-function changeTheme() { document.body.className = document.getElementById('themeSelector').value; }
+// --- تغيير الثيم (الألوان) ---
+function changeTheme() {
+    document.body.className = document.getElementById('themeSelector').value;
+}
 
+// --- رفع الشعار ---
 function uploadLogo() {
     const file = document.getElementById('logoUploader').files[0];
     if (file) {
@@ -191,6 +221,7 @@ function uploadLogo() {
     }
 }
 
+// --- تصدير PDF الاحترافي ---
 function downloadPDF() {
     const element = document.getElementById('paperToDownload');
     const opt = {
@@ -201,6 +232,7 @@ function downloadPDF() {
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
 
+    // تغيير نص الزر أثناء التحميل
     const btn = document.querySelector('.download-btn');
     const oldText = btn.innerHTML;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري المعالجة...';
@@ -212,6 +244,7 @@ function downloadPDF() {
     });
 }
 
+// --- الحفظ المحلي (Local Storage) ---
 function saveToLocal() {
     const data = {
         type: document.getElementById('docType').value,
@@ -223,7 +256,7 @@ function saveToLocal() {
         details: document.getElementById('details').value
     };
     localStorage.setItem('docuMonsterData', JSON.stringify(data));
-    alert('✅ تم حفظ المسودة بنجاح!');
+    alert('✅ تم حفظ المسودة في المتصفح بنجاح!');
 }
 
 function loadFromLocal() {
