@@ -1,62 +1,128 @@
+:root {
+    --primary: #2563eb;
+    --bg: #f3f4f6;
+    --text: #1f2937;
+    --paper: #ffffff;
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f4f9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    font-family: 'Tajawal', sans-serif;
+    background-color: var(--bg);
     margin: 0;
+    display: flex;
+    height: 100vh;
+    overflow: hidden; /* لمنع التمرير العام */
 }
 
-.container {
+/* --- لوحة التحكم (اليمين) --- */
+.editor-panel {
+    width: 350px;
     background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    width: 90%;
-    max-width: 500px;
-    text-align: center;
+    padding: 20px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    overflow-y: auto;
+    z-index: 10;
 }
 
-h1 { color: #333; }
+.header h2 { color: var(--primary); margin-top: 0; }
+.header p { font-size: 0.9rem; color: #666; }
 
-.input-group {
-    margin-bottom: 15px;
-    text-align: right;
-}
-
-label { display: block; margin-bottom: 5px; font-weight: bold; }
-
-input, select {
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 0.9rem; }
+.form-group input, .form-group select, .form-group textarea {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
+    border-radius: 6px;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: 0.3s;
 }
+.form-group input:focus { border-color: var(--primary); outline: none; }
 
-button {
-    background-color: #28a745;
+.print-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary);
     color: white;
     border: none;
-    padding: 10px 20px;
-    font-size: 18px;
-    border-radius: 5px;
+    border-radius: 6px;
+    font-size: 1rem;
     cursor: pointer;
-    width: 100%;
-    margin-top: 10px;
+    font-family: inherit;
+    transition: 0.2s;
+}
+.print-btn:hover { background: #1d4ed8; }
+
+/* --- لوحة المعاينة (اليسار) --- */
+.preview-panel {
+    flex: 1;
+    background: #e5e7eb;
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+    overflow-y: auto;
 }
 
-button:hover { background-color: #218838; }
-
-.result {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: #e9ecef;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    text-align: right;
-    white-space: pre-wrap; /* للحفاظ على الأسطر */
+/* --- ورقة A4 --- */
+.a4-paper {
+    background: white;
+    width: 210mm;
+    min-height: 297mm;
+    padding: 25mm;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    position: relative;
+    box-sizing: border-box;
 }
 
-.hidden { display: none; }
+#documentContent {
+    font-size: 14pt;
+    line-height: 1.8;
+    text-align: justify;
+    white-space: pre-wrap;
+}
+
+.title-doc {
+    text-align: center;
+    font-size: 24pt;
+    font-weight: bold;
+    margin-bottom: 40px;
+    text-decoration: underline;
+}
+
+.signatures {
+    margin-top: 60px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.sig-block {
+    text-align: center;
+    width: 40%;
+}
+
+.sign-space {
+    margin-top: 40px;
+    border-top: 1px dashed #333;
+    padding-top: 10px;
+    color: #888;
+}
+
+/* --- إعدادات الطباعة (مهم جداً للـ PDF) --- */
+@media print {
+    body { display: block; background: white; height: auto; overflow: visible; }
+    .editor-panel { display: none; } /* إخفاء لوحة التحكم عند الطباعة */
+    .preview-panel { display: block; padding: 0; overflow: visible; }
+    .a4-paper { 
+        box-shadow: none; 
+        margin: 0; 
+        width: 100%; 
+        min-height: auto;
+    }
+}
+/* تحسين للموبايل */
+@media (max-width: 768px) {
+    body { flex-direction: column; overflow: auto; }
+    .editor-panel { width: 100%; height: auto; box-sizing: border-box;}
+    .a4-paper { width: 100%; padding: 15mm; }
+}
